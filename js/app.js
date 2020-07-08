@@ -1,6 +1,6 @@
 // Constantes
 const WORK_HOURS = [];
-
+var count = 0;
 const timetable = [
     "08:00 - 09:00",
     "09:00 - 10:00",
@@ -32,6 +32,18 @@ var myTeam = [{
 ];
 // GENERACION ALEATORIA
 
+var lookSpace = (myTeam, probando, i) => {
+    for (var z = 0; z < myTeam[i].availability.length; z++) {
+        if (myTeam[i].availability[z] === "Sí") {
+            probando[i].availability[z] = "Si";
+        } else {
+            probando[i].availability[z] = "No";
+        }
+    }
+    //console.log(probando);
+};
+
+
 var printNames = (myTeam) => {
     var probando = [{
             availability: WORK_HOURS.fill(true)
@@ -51,15 +63,15 @@ var printNames = (myTeam) => {
         for (var x = 0; x < timetable.length; x++) {
             console.log("      " + timetable[x] + ": " + myTeam[i].availability[x]);
         }
-        for (var z = 0; z < myTeam[i].availability.length; z++) {
-            if (myTeam[i].availability[z] === "Sí") {
-                probando[i].availability[z] = "SIIII";
-            } else {
-                probando[i].availability[z] = "NOOO";
+        lookSpace(myTeam, probando, i);
+
+        /* for (var can of probando[i].availability) {
+            if(can === "Sí"){
+
             }
-        }
+        } */
     }
-    console.log(probando);
+    //console.log(probando);
 
 };
 
@@ -72,17 +84,51 @@ var random = (n, min, max) => {
     }
     return yesOrNot;
 };
+var canWeMeet = (temporal, index) => {
+    var meeting;
+    if (temporal[index] === 4) {
+        for (var x = 0; x < timetable.length; x++) {
+            meeting = timetable[index];
+        }
+        message = "Se pueden reunir en la hora de " + meeting;
+        /* count = 0; */
+        return console.log(message);
+    } else {
+        message = "No se pueden reunir hoy, pruebe otro día";
+        count++;
+    }
+    if (count <= 1) return console.log(message);
+
+    return count;
+};
+var temporal = [0, 0, 0, 0, 0, 0, 0, 0];
+var lookingSpace = (mates) => {
+    for (var i = 0; i < mates.availability.length; i++) {
+        if (mates.availability[i] === "Sí") {
+            temporal[i]++;
+        }
+        /* if (temporal[i] === 4) {
+
+        } */
+
+
+
+        canWeMeet(temporal, i);
+    }
+
+};
 
 var takeRandom = (myTeam) => {
     for (mates of myTeam) {
         mates.availability = random(1, 1, 10);
+        lookingSpace(mates);
     }
+
     printNames(myTeam);
     return myTeam;
 };
 
-
 takeRandom(myTeam);
 
 
-// BUSCAR HUECO LIBRE
+// BUSCAR HUECO LIBREs
