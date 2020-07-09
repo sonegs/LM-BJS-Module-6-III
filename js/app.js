@@ -89,50 +89,48 @@ var takeRandom = (myTeam) => {
     console.log(canWeMeet(check));
     return myTeam;
 };
-//
-//takeRandom(myTeam);
-//
-//
-//takeRandom(myTeam);
-//
-//
-//takeRandom(myTeam);
-//
-//
-//takeRandom(myTeam);
-//
+
+takeRandom(myTeam);
+
 //EJERCICIO DE LA CALCULADORA
+//Array con el tipo de billetes/monedas
 const billets = [200, 100, 50, 20, 10, 5, 2, 1, 0.50, 0.20, 0.10, 0.05, 0.02, 0.01];
 
 var type;
+
+//divide el precio del producto y el dinero pagado
 var paymentChange = (money, change) => change / money;
 
+// Imprime el cambio del dinero entregado en una lista 
 var printList = (message) => {
     var list = document.getElementById("list");
     var item = document.createElement("li");
     item.innerText = message;
-    list.appendChild(item);
+    return list.appendChild(item);
 };
+
+// Calcula cuanto hay que devolver
 
 var calculate = () => {
     var total = document.getElementById("total").value;
     var pay = document.getElementById("paying").value;
     var change = pay - total;
 
+    //busca en el array de los distintos billetes/monedas
     for (var money of billets) {
         var count = paymentChange(money, change);
+        //si la división es mayor o igual que 1, formula el mensaje a imprimir y llama a la función que imprime el mensaje en la web
         if (count >= 1) {
             change = change - parseInt(count) * money;
             money <= 2 ? type = "moneda/s" : type = "billete/s";
             var message = parseInt(count) + " " + type + " de " + money + " euros";
-            //printList(message);
-            console.log(message);
-            //result.appendChild(message);
+            printList(message);
         }
     }
-
+    return change;
 };
 
+//Imprime por pantalla los inputs y el botón de calcular resultado
 var printInputs = () => {
     // selecciona el div inputs en el que se van a mostrar los elementos
     var inputs = document.getElementById("inputs");
@@ -161,10 +159,10 @@ var printInputs = () => {
     inputs.appendChild(divTotal).appendChild(inputTotal);
     inputs.appendChild(divPay).appendChild(labelPay);
     inputs.appendChild(divPay).appendChild(inputPay);
-
     inputs.appendChild(button);
+
+    //dispara la función calculate al hacer click en el botón
     button.addEventListener("click", calculate);
 };
 
 printInputs();
-var result = document.getElementById("resultado");
