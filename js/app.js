@@ -1,6 +1,8 @@
+//EJERCICIO DE LA AGENDA
+
 // Constantes
+
 const WORK_HOURS = [];
-var count = 0;
 const timetable = [
     "08:00 - 09:00",
     "09:00 - 10:00",
@@ -13,6 +15,8 @@ const timetable = [
 ];
 
 // Datos
+var check = [0, 0, 0, 0, 0, 0, 0, 0];
+var message = "No se pueden reunir hoy, pruebe otro día";
 var myTeam = [{
         name: "María",
         availability: WORK_HOURS.fill(true)
@@ -30,51 +34,20 @@ var myTeam = [{
         availability: WORK_HOURS.fill(true)
     },
 ];
+
 // GENERACION ALEATORIA
 
-var lookSpace = (myTeam, probando, i) => {
-    for (var z = 0; z < myTeam[i].availability.length; z++) {
-        if (myTeam[i].availability[z] === "Sí") {
-            probando[i].availability[z] = "Si";
-        } else {
-            probando[i].availability[z] = "No";
-        }
-    }
-    //console.log(probando);
-};
-
-
+// Imprime por consola el horario y la disponibilidad de los compañeros del equipo
 var printNames = (myTeam) => {
-    var probando = [{
-            availability: WORK_HOURS.fill(true)
-        },
-        {
-            availability: WORK_HOURS.fill(true)
-        },
-        {
-            availability: WORK_HOURS.fill(true)
-        },
-        {
-            availability: WORK_HOURS.fill(true)
-        },
-    ];
     for (var i = 0; i < myTeam.length; i++) {
         console.log("Disponibilidad de " + myTeam[i].name);
         for (var x = 0; x < timetable.length; x++) {
             console.log("      " + timetable[x] + ": " + myTeam[i].availability[x]);
         }
-        lookSpace(myTeam, probando, i);
-
-        /* for (var can of probando[i].availability) {
-            if(can === "Sí"){
-
-            }
-        } */
     }
-    //console.log(probando);
-
 };
 
+// Asigna la disponibilidad de reunión de los compañeros a través de números aleatorios
 var random = (n, min, max) => {
     var yesOrNot = new Array(8);
     for (var z = 0; z < yesOrNot.length; z++) {
@@ -84,51 +57,114 @@ var random = (n, min, max) => {
     }
     return yesOrNot;
 };
-var canWeMeet = (temporal, index) => {
-    var meeting;
-    if (temporal[index] === 4) {
-        for (var x = 0; x < timetable.length; x++) {
-            meeting = timetable[index];
-        }
-        message = "Se pueden reunir en la hora de " + meeting;
-        /* count = 0; */
-        return console.log(message);
-    } else {
-        message = "No se pueden reunir hoy, pruebe otro día";
-        count++;
-    }
-    if (count <= 1) return console.log(message);
 
-    return count;
+// Recorre el array check y cambia el mensaje si los compañeros pueden reunirse
+var canWeMeet = (check) => {
+    for (var f = 0; f < check.length; f++) {
+        if (check[f] === 4) {
+            message = "Se pueden reunir en la hora de " + timetable[f];
+        }
+    }
+    return message;
 };
-var temporal = [0, 0, 0, 0, 0, 0, 0, 0];
+
+// Busca un hueco libre en el horario de cada compañero asignando valores al array check
 var lookingSpace = (mates) => {
     for (var i = 0; i < mates.availability.length; i++) {
         if (mates.availability[i] === "Sí") {
-            temporal[i]++;
+            check[i]++;
         }
-        /* if (temporal[i] === 4) {
-
-        } */
-
-
-
-        canWeMeet(temporal, i);
     }
-
 };
 
+// Recorre los datos de la variable myTeam, asigna la disponibilidad de cada compañero, 
+// llama a las funciones que tienen que buscar el espacio e imprimir por consola el horario y la reunión
+
 var takeRandom = (myTeam) => {
-    for (mates of myTeam) {
+    for (var mates of myTeam) {
         mates.availability = random(1, 1, 10);
         lookingSpace(mates);
     }
-
     printNames(myTeam);
+    console.log(canWeMeet(check));
     return myTeam;
 };
+//
+//takeRandom(myTeam);
+//
+//
+//takeRandom(myTeam);
+//
+//
+//takeRandom(myTeam);
+//
+//
+//takeRandom(myTeam);
+//
+//EJERCICIO DE LA CALCULADORA
+const billets = [200, 100, 50, 20, 10, 5, 2, 1, 0.50, 0.20, 0.10, 0.05, 0.02, 0.01];
 
-takeRandom(myTeam);
+var type;
+var paymentChange = (money, change) => change / money;
 
+var printList = (message) => {
+    var list = document.getElementById("list");
+    var item = document.createElement("li");
+    item.innerText = message;
+    list.appendChild(item);
+};
 
-// BUSCAR HUECO LIBREs
+var calculate = () => {
+    var total = document.getElementById("total").value;
+    var pay = document.getElementById("paying").value;
+    var change = pay - total;
+
+    for (var money of billets) {
+        var count = paymentChange(money, change);
+        if (count >= 1) {
+            change = change - parseInt(count) * money;
+            money <= 2 ? type = "moneda/s" : type = "billete/s";
+            var message = parseInt(count) + " " + type + " de " + money + " euros";
+            //printList(message);
+            console.log(message);
+            //result.appendChild(message);
+        }
+    }
+
+};
+
+var printInputs = () => {
+    // selecciona el div inputs en el que se van a mostrar los elementos
+    var inputs = document.getElementById("inputs");
+
+    // crea un div y un input para mostrar los elementos de la lista
+    var divTotal = document.createElement("div");
+    var divPay = document.createElement("div");
+    var inputTotal = document.createElement("input");
+    var inputPay = document.createElement("input");
+    var labelTotal = document.createElement("label");
+    var button = document.createElement("button");
+    var labelPay = document.createElement("label");
+
+    // asigna valores al input
+    inputTotal.setAttribute("type", "number");
+    inputTotal.setAttribute("id", "total");
+    inputPay.setAttribute("type", "number");
+    inputPay.setAttribute("id", "paying");
+    button.setAttribute("id", "calculate");
+    labelTotal.innerText = "Total a pagar";
+    labelPay.innerText = "Importe recibido";
+    button.innerText = "Calcular";
+
+    // finalmente, muestra la lista por pantalla
+    inputs.appendChild(divTotal).appendChild(labelTotal);
+    inputs.appendChild(divTotal).appendChild(inputTotal);
+    inputs.appendChild(divPay).appendChild(labelPay);
+    inputs.appendChild(divPay).appendChild(inputPay);
+
+    inputs.appendChild(button);
+    button.addEventListener("click", calculate);
+};
+
+printInputs();
+var result = document.getElementById("resultado");
